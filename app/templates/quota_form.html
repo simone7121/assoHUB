@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Nuova quota - AssoHUB{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4">Registra quota per {{ iscritto.nome }} {{ iscritto.cognome }}</h1>
+<form method="post">
+  {{ form.hidden_tag() }}
+  <div class="row g-3">
+    <div class="col-md-4">
+      {{ form.anno.label(class_='form-label') }}
+      {{ form.anno(class_='form-control') }}
+      <small class="text-muted">Seleziona il primo giorno dell'anno.</small>
+    </div>
+    <div class="col-md-4">
+      {{ form.importo.label(class_='form-label') }}
+      {{ form.importo(class_='form-control') }}
+    </div>
+    <div class="col-md-4">
+      {{ form.stato.label(class_='form-label') }}
+      {{ form.stato(class_='form-select') }}
+    </div>
+  </div>
+  <div class="mt-4">
+    <button type="submit" class="btn btn-primary">Salva</button>
+    <a class="btn btn-secondary" href="{{ url_for('main.quote_detail', iscritto_id=iscritto.id_iscritto) }}">Annulla</a>
+  </div>
+</form>
+{% endblock %}

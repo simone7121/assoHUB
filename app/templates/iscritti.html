@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Iscritti - AssoHUB{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3">Iscritti</h1>
+  <a class="btn btn-primary" href="{{ url_for('main.iscritti_add') }}">Nuovo iscritto</a>
+</div>
+<table class="table table-striped align-middle">
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>Telefono</th>
+      <th>Ruolo</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for iscritto in iscritti %}
+    <tr>
+      <td>{{ iscritto.nome }} {{ iscritto.cognome }}</td>
+      <td>{{ iscritto.email }}</td>
+      <td>{{ iscritto.telefono or '-' }}</td>
+      <td>{{ iscritto.ruolo }}</td>
+      <td class="text-end">
+        <a class="btn btn-sm btn-outline-secondary" href="{{ url_for('main.iscritti_edit', iscritto_id=iscritto.id_iscritto) }}">Modifica</a>
+        <form method="post" action="{{ url_for('main.iscritti_delete', iscritto_id=iscritto.id_iscritto) }}" class="d-inline">
+          {{ csrf_token() }}
+          <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Confermare eliminazione?')">Elimina</button>
+        </form>
+        <a class="btn btn-sm btn-outline-primary" href="{{ url_for('main.quote_detail', iscritto_id=iscritto.id_iscritto) }}">Quote</a>
+      </td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" class="text-center text-muted">Nessun iscritto</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

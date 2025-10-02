@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Dashboard - AssoHUB{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4">Dashboard amministratore</h1>
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="card text-bg-primary h-100">
+      <div class="card-body">
+        <h2 class="display-6">{{ iscritti_count }}</h2>
+        <p class="mb-0">Iscritti attivi</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-bg-success h-100">
+      <div class="card-body">
+        <h2 class="display-6">€ {{ '%.2f'|format(entrate) }}</h2>
+        <p class="mb-0">Entrate totali</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-bg-danger h-100">
+      <div class="card-body">
+        <h2 class="display-6">€ {{ '%.2f'|format(uscite) }}</h2>
+        <p class="mb-0">Uscite totali</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="card text-bg-secondary h-100">
+      <div class="card-body">
+        <h2 class="display-6">{{ eventi_count }}</h2>
+        <p class="mb-0">Eventi organizzati</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header">Quote associative</div>
+  <div class="card-body">
+    <p class="mb-0">Quote in sospeso: <strong>{{ quote_in_sospeso }}</strong></p>
+  </div>
+</div>
+{% endblock %}
