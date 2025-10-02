@@ -1,22 +1,37 @@
 {% extends 'base.html' %}
-{% block title %}Login | AssoHUB{% endblock %}
+{% block title %}Accedi | AssoHUB{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-4">
-        <h2 class="mb-3 text-center">Accedi</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.non_field_errors }}
-            <div class="mb-3">
-                <label class="form-label" for="id_username">Username</label>
-                {{ form.username }}
+    <div class="col-md-5 col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h4 text-center mb-3">Accedi</h2>
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                    <div class="form-error-box">
+                        {% for error in form.non_field_errors %}
+                        <div>{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                        <div class="form-error-text">
+                            {% for error in field.errors %}
+                            <div>{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary w-100">Entra</button>
+                </form>
             </div>
-            <div class="mb-3">
-                <label class="form-label" for="id_password">Password</label>
-                {{ form.password }}
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Login</button>
-        </form>
+        </div>
     </div>
 </div>
 {% endblock %}

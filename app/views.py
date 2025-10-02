@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 
 from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.db.models import Count, Sum
 from django.shortcuts import get_object_or_404, redirect, render
@@ -15,6 +16,8 @@ from .forms import (
     MemberUserForm,
     MembershipFeeForm,
     ParticipationForm,
+    PasswordAggiornamentoForm,
+    UserProfileForm,
 )
 from .models import Event, FinancialTransaction, Member, MembershipFee, Participation
 from .utils import admin_required
@@ -33,6 +36,41 @@ def public_home(request):
         {
             "events": upcoming_events,
             "participations": participations,
+        },
+    )
+
+
+@login_required
+def profile(request):
+    user = request.user
+    if request.method == "POST":
+        if "profile_submit" in request.POST:
+            profile_form = UserProfileForm(request.POST, user=user)
+            password_form = PasswordAggiornamentoForm(user)
+            if profile_form.is_valid():
+                profile_form.save()
+                messages.success(request, "Profilo aggiornato con successo.")
+                return redirect("profile")
+        elif "password_submit" in request.POST:
+            profile_form = UserProfileForm(user=user)
+            password_form = PasswordAggiornamentoForm(user, data=request.POST)
+            if password_form.is_valid():
+                password_form.save()
+                update_session_auth_hash(request, password_form.user)
+                messages.success(request, "Password aggiornata correttamente.")
+                return redirect("profile")
+        else:
+            profile_form = UserProfileForm(user=user)
+            password_form = PasswordAggiornamentoForm(user)
+    else:
+        profile_form = UserProfileForm(user=user)
+        password_form = PasswordAggiornamentoForm(user)
+    return render(
+        request,
+        "account/profile.html",
+        {
+            "profile_form": profile_form,
+            "password_form": password_form,
         },
     )
 
@@ -185,12 +223,16 @@ def event_update(request, pk: int):
 @login_required
 def event_register(request, event_id: int):
     event = get_object_or_404(Event, pk=event_id)
-    member = request.user.member
+    try:
+        member = request.user.member
+    except Member.DoesNotExist:
+        messages.error(request, "Solo gli iscritti possono registrarsi agli eventi.")
+        return redirect("events_list")
     participation, created = Participation.objects.get_or_create(member=member, event=event)
     if created:
         messages.success(request, "Iscrizione all'evento registrata.")
     else:
-        messages.info(request, "Sei già iscritto a questo evento.")
+        messages.info(request, "Sei gia iscritto a questo evento.")
     return redirect("events_list")
 
 

@@ -41,12 +41,19 @@ class User(AbstractUser):
     ROLE_CHOICES = Member.ROLE_CHOICES
 
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default=ROLE_ASSOCIATO)
-    member = models.OneToOneField(Member, on_delete=models.CASCADE, related_name="user")
+    member = models.OneToOneField(Member, on_delete=models.CASCADE, related_name="user", blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        if self.member and self.member.role != self.role:
-            self.member.role = self.role
-            self.member.save(update_fields=["role"])
+        if self._state.adding and not type(self).objects.exists():  # first user defaults to admin
+            self.role = self.ROLE_AMMINISTRATORE
+        if self.member_id:
+            try:
+                member = self.member
+            except Member.DoesNotExist:  # user can exist without linked member
+                member = None
+            if member and member.role != self.role:
+                member.role = self.role
+                member.save(update_fields=["role"])
         super().save(*args, **kwargs)
 
     @property
@@ -56,6 +63,28 @@ class User(AbstractUser):
     @property
     def is_administrator(self) -> bool:
         return self.role == self.ROLE_AMMINISTRATORE
+
+    @property
+    def display_name(self) -> str:
+        try:
+            member = self.member
+        except Member.DoesNotExist:
+            member = None
+        if member and member.full_name:
+            return member.full_name
+        full_name = self.get_full_name()
+        return full_name or self.username
+
+
+    @property
+    def has_member(self) -> bool:
+        if not self.member_id:
+            return False
+        try:
+            self.member
+        except Member.DoesNotExist:
+            return False
+        return True
 
 
 class MembershipFee(models.Model):
