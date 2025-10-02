@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Quote associative | AssoHUB{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Quote associative</h2>
+    {% if user.is_administrator %}
+    <a href="{% url 'fees_create' %}" class="btn btn-primary">Registra quota</a>
+    {% endif %}
+</div>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Socio</th>
+            <th>Anno</th>
+            <th>Importo</th>
+            <th>Stato</th>
+            <th>Data pagamento</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for fee in fees %}
+        <tr>
+            <td><a href="{% url 'member_fees' fee.member.id %}">{{ fee.member.full_name }}</a></td>
+            <td>{{ fee.year }}</td>
+            <td>€ {{ fee.amount|floatformat:2 }}</td>
+            <td>{{ fee.get_status_display }}</td>
+            <td>{{ fee.payment_date|date:"d/m/Y" }}</td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="5" class="text-center">Nessuna quota registrata.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

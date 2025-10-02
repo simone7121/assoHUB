@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard | AssoHUB{% endblock %}
+{% block content %}
+<h2 class="mb-4">Dashboard amministratore</h2>
+<div class="row g-3 mb-4">
+    <div class="col-md-3">
+        <div class="card text-bg-primary h-100">
+            <div class="card-body">
+                <h5 class="card-title">Iscritti attivi</h5>
+                <p class="display-6">{{ members_count }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-success h-100">
+            <div class="card-body">
+                <h5 class="card-title">Entrate</h5>
+                <p class="display-6">€ {{ income_total|floatformat:2 }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-danger h-100">
+            <div class="card-body">
+                <h5 class="card-title">Uscite</h5>
+                <p class="display-6">€ {{ expense_total|floatformat:2 }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-bg-dark h-100">
+            <div class="card-body">
+                <h5 class="card-title">Saldo</h5>
+                <p class="display-6">€ {{ balance|floatformat:2 }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">Stato quote associative</div>
+            <div class="card-body">
+                {% if fees_status %}
+                <ul class="list-group">
+                    {% for item in fees_status %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ item.status|title }}
+                        <span class="badge bg-primary rounded-pill">{{ item.total }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted">Nessuna quota registrata.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header">Ultimi eventi</div>
+            <div class="card-body">
+                {% if recent_events %}
+                <ul class="list-group">
+                    {% for event in recent_events %}
+                    <li class="list-group-item">
+                        <strong>{{ event.title }}</strong><br>
+                        <small>{{ event.date|date:"d/m/Y H:i" }} - {{ event.location }}</small>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted">Nessun evento registrato.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
