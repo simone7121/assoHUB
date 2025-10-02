@@ -1,0 +1,24 @@
+body {
+  background-color: #f7f9fb;
+}
+
+.navbar-brand {
+  font-weight: 600;
+}
+
+.card {
+  border-radius: 0.75rem;
+}
+
+.table thead {
+  background-color: #0d6efd;
+  color: #fff;
+}
+
+.table thead th {
+  border-bottom: none;
+}
+
+.flash-container {
+  position: relative;
+}

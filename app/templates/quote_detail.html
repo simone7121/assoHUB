@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Quote socio - AssoHUB{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3">Quote socio</h1>
+  {% if current_user.ruolo == 'Amministratore' %}
+  <a class="btn btn-primary" href="{{ url_for('main.quote_add', iscritto_id=iscritto_id) }}">Registra quota</a>
+  {% endif %}
+</div>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Anno</th>
+      <th>Importo</th>
+      <th>Stato</th>
+      <th>Data pagamento</th>
+      {% if current_user.ruolo == 'Amministratore' %}
+      <th>Azioni</th>
+      {% endif %}
+    </tr>
+  </thead>
+  <tbody>
+    {% for quota in quote %}
+    <tr>
+      <td>{{ quota.anno }}</td>
+      <td>€ {{ '%.2f'|format(quota.importo) }}</td>
+      <td>{{ quota.stato }}</td>
+      <td>{{ quota.data_pagamento.strftime('%d/%m/%Y') if quota.data_pagamento else '-' }}</td>
+      {% if current_user.ruolo == 'Amministratore' %}
+      <td class="text-end">
+        {% if quota.stato != 'Pagata' %}
+        <form method="post" action="{{ url_for('main.quota_mark_paid', quota_id=quota.id_quota) }}">
+          {{ csrf_token() }}
+          <button type="submit" class="btn btn-sm btn-success">Segna come pagata</button>
+        </form>
+        {% else %}
+        <span class="badge bg-success">Pagata</span>
+        {% endif %}
+      </td>
+      {% endif %}
+    </tr>
+    {% else %}
+    <tr>
+      <td colspan="{{ 5 if current_user.ruolo == 'Amministratore' else 4 }}" class="text-center text-muted">
+        Nessuna quota disponibile
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

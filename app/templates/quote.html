@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Quote - AssoHUB{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Quote associative</h1>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Anno</th>
+      <th>Socio</th>
+      <th>Importo</th>
+      <th>Stato</th>
+      <th>Data pagamento</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for quota in quote %}
+    <tr>
+      <td>{{ quota.anno }}</td>
+      <td><a href="{{ url_for('main.quote_detail', iscritto_id=quota.iscritto.id_iscritto) }}">{{ quota.iscritto.nome }} {{ quota.iscritto.cognome }}</a></td>
+      <td>€ {{ '%.2f'|format(quota.importo) }}</td>
+      <td>{{ quota.stato }}</td>
+      <td>{{ quota.data_pagamento.strftime('%d/%m/%Y') if quota.data_pagamento else '-' }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" class="text-center text-muted">Nessuna quota registrata</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

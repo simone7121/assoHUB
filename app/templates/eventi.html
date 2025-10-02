@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Eventi - AssoHUB{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3">Tutti gli eventi</h1>
+  {% if current_user.is_authenticated and current_user.ruolo == 'Amministratore' %}
+  <a class="btn btn-success" href="{{ url_for('main.eventi_add') }}">Nuovo evento</a>
+  {% endif %}
+</div>
+<div class="list-group">
+  {% for evento in eventi %}
+  <div class="list-group-item">
+    <div class="d-flex justify-content-between">
+      <div>
+        <h5 class="mb-1">{{ evento.titolo }}</h5>
+        <p class="mb-1 text-muted">{{ evento.data.strftime('%d/%m/%Y %H:%M') }} - {{ evento.luogo }}</p>
+        <p class="mb-1">{{ evento.descrizione or 'Nessuna descrizione' }}</p>
+      </div>
+      {% if current_user.is_authenticated %}
+      <form method="post" action="{{ url_for('main.eventi_partecipazione', evento_id=evento.id_evento) }}">
+        {{ csrf_token() }}
+        <button type="submit" class="btn btn-outline-primary">Partecipa</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+  {% else %}
+  <p class="text-muted">Nessun evento disponibile.</p>
+  {% endfor %}
+</div>
+{% endblock %}

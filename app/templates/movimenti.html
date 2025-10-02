@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Movimenti economici - AssoHUB{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3">Movimenti economici</h1>
+  <a class="btn btn-primary" href="{{ url_for('main.movimenti_add') }}">Nuovo movimento</a>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Data</th>
+      <th>Tipo</th>
+      <th>Importo</th>
+      <th>Descrizione</th>
+      <th>Evento</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for movimento in movimenti %}
+    <tr>
+      <td>{{ movimento.data.strftime('%d/%m/%Y') }}</td>
+      <td>{{ movimento.tipo|capitalize }}</td>
+      <td>€ {{ '%.2f'|format(movimento.importo) }}</td>
+      <td>{{ movimento.descrizione or '-' }}</td>
+      <td>{{ movimento.evento.titolo if movimento.evento else '-' }}</td>
+    </tr>
+    {% else %}
+    <tr><td colspan="5" class="text-center text-muted">Nessun movimento registrato</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

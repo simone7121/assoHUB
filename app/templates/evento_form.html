@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} - AssoHUB{% endblock %}
+{% block content %}
+<h1 class="h3 mb-4">{{ title }}</h1>
+<form method="post">
+  {{ form.hidden_tag() }}
+  <div class="mb-3">
+    {{ form.titolo.label(class_='form-label') }}
+    {{ form.titolo(class_='form-control') }}
+  </div>
+  <div class="mb-3">
+    {{ form.descrizione.label(class_='form-label') }}
+    {{ form.descrizione(class_='form-control', rows=4) }}
+  </div>
+  <div class="mb-3">
+    {{ form.data.label(class_='form-label') }}
+    {{ form.data(class_='form-control') }}
+  </div>
+  <div class="mb-3">
+    {{ form.luogo.label(class_='form-label') }}
+    {{ form.luogo(class_='form-control') }}
+  </div>
+  <button class="btn btn-primary" type="submit">Salva</button>
+  <a class="btn btn-secondary" href="{{ url_for('main.eventi_list') }}">Annulla</a>
+</form>
+{% endblock %}
