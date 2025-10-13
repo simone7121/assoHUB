@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Eventi | AssoHUB{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Eventi</h2>
+    {% if user.is_authenticated and user.is_administrator %}
+    <a href="{% url 'event_create' %}" class="btn btn-primary">Nuovo evento</a>
+    {% endif %}
+</div>
+<h4>Prossimi eventi</h4>
+<div class="row">
+    {% for event in future_events %}
+    <div class="col-md-6 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">{{ event.title }}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ event.date|date:"d/m/Y H:i" }} - {{ event.location }}</h6>
+                <p class="card-text">{{ event.description|linebreaks }}</p>
+                {% if user.is_authenticated %}
+                    {% if user.has_member %}
+                        {% if event.id in user_participations %}
+                        <span class="badge text-bg-success">Iscritto</span>
+                        {% else %}
+                        <a href="{% url 'event_register' event.id %}" class="btn btn-outline-primary">Iscriviti</a>
+                        {% endif %}
+                    {% else %}
+                        <span class="badge text-bg-warning">Solo per iscritti</span>
+                    {% endif %}
+                    {% if user.is_administrator %}
+                    <a href="{% url 'event_update' event.id %}" class="btn btn-sm btn-outline-secondary">Modifica</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>Non ci sono eventi futuri.</p>
+    {% endfor %}
+</div>
+<h4 class="mt-4">Eventi passati</h4>
+<ul class="list-group">
+    {% for event in past_events %}
+    <li class="list-group-item d-flex justify-content-between">
+        <span>{{ event.title }} - {{ event.date|date:"d/m/Y" }}</span>
+        {% if user.is_authenticated and user.is_administrator %}
+        <a href="{% url 'event_update' event.id %}" class="btn btn-sm btn-outline-secondary">Modifica</a>
+        {% endif %}
+    </li>
+    {% empty %}
+    <li class="list-group-item">Nessun evento passato.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

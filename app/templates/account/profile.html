@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Profilo | AssoHUB{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Dati personali</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    {% if profile_form.non_field_errors %}
+                    <div class="form-error-box">{{ profile_form.non_field_errors|striptags }}</div>
+                    {% endif %}
+                    {% for field in profile_form %}
+                    <div class="mb-3">
+                        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                        <div class="form-error-text">{{ field.errors|striptags }}</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" name="profile_submit" value="1" class="btn btn-primary">Salva modifiche</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Aggiorna password</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    {% if password_form.non_field_errors %}
+                    <div class="form-error-box">{{ password_form.non_field_errors|striptags }}</div>
+                    {% endif %}
+                    {% for field in password_form %}
+                    <div class="mb-3">
+                        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                        <div class="form-error-text">{{ field.errors|striptags }}</div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                    <button type="submit" name="password_submit" value="1" class="btn btn-secondary">Aggiorna password</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

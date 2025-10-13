@@ -1,0 +1,148 @@
+:root {
+    --asso-body-bg: #f5f7fa;
+    --asso-text-color: #212529;
+    --asso-card-bg: #ffffff;
+    --asso-card-border: rgba(0, 0, 0, 0.08);
+    --asso-navbar-bg: #0d6efd;
+    --asso-navbar-text: #ffffff;
+    --asso-error-bg: #fde2e1;
+    --asso-error-border: #dc3545;
+    --asso-error-text: #842029;
+    --asso-input-bg: #ffffff;
+    --asso-input-border: #ced4da;
+    --asso-input-text: #212529;
+    --asso-link-color: #0d6efd;
+    --asso-link-hover: #0b5ed7;
+}
+
+[data-theme='dark'] {
+    --asso-body-bg: #121417;
+    --asso-text-color: #f8f9fa;
+    --asso-card-bg: #1f242b;
+    --asso-card-border: rgba(255, 255, 255, 0.1);
+    --asso-navbar-bg: #0b7285;
+    --asso-navbar-text: #f8f9fa;
+    --asso-error-bg: rgba(220, 53, 69, 0.2);
+    --asso-error-border: #ff6b6b;
+    --asso-error-text: #ffc9c9;
+    --asso-input-bg: #2b3036;
+    --asso-input-border: #495057;
+    --asso-input-text: #f8f9fa;
+    --asso-link-color: #66d9ff;
+    --asso-link-hover: #38bdf8;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+body {
+    background-color: var(--asso-body-bg);
+    color: var(--asso-text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    min-height: 100vh;
+}
+
+.navbar {
+    background-color: var(--asso-navbar-bg) !important;
+    transition: background-color 0.3s ease;
+}
+
+.navbar .navbar-brand,
+.navbar .nav-link,
+.navbar .navbar-text {
+    color: var(--asso-navbar-text) !important;
+    transition: color 0.3s ease;
+}
+
+.navbar .nav-link.active,
+.navbar .nav-link:focus,
+.navbar .nav-link:hover {
+    color: #ffffff !important;
+}
+
+.card,
+.modal-content {
+    background-color: var(--asso-card-bg);
+    color: var(--asso-text-color);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--asso-card-border);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.list-group-item {
+    background-color: var(--asso-card-bg);
+    color: var(--asso-text-color);
+    border: 1px solid var(--asso-card-border);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--asso-text-color);
+}
+
+a {
+    color: var(--asso-link-color);
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--asso-link-hover);
+}
+
+.form-control,
+.form-select {
+    background-color: var(--asso-input-bg);
+    color: var(--asso-input-text);
+    border-color: var(--asso-input-border);
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--asso-input-bg);
+    color: var(--asso-input-text);
+    border-color: var(--asso-link-color);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+[data-theme='dark'] .form-control:focus,
+[data-theme='dark'] .form-select:focus {
+    box-shadow: 0 0 0 0.25rem rgba(102, 217, 255, 0.25);
+}
+
+.table {
+    color: var(--asso-text-color);
+}
+
+.alert {
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.form-error-box {
+    border: 1px solid var(--asso-error-border);
+    background-color: var(--asso-error-bg);
+    color: var(--asso-error-text);
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.form-error-text {
+    color: var(--asso-error-text);
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+#theme-toggle {
+    min-width: 8rem;
+    color: var(--asso-navbar-text) !important;
+    border-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+#theme-toggle:hover,
+#theme-toggle:focus {
+    color: var(--asso-navbar-bg) !important;
+    background-color: var(--asso-navbar-text) !important;
+    border-color: var(--asso-navbar-text) !important;
+}
